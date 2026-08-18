@@ -5,7 +5,9 @@ ffmpeg m4a encode, served over the tailnet to the Backtrack iOS app.
 
 ## Setup (once)
 
-Requirements: Python 3.11 (`py -3.11`), ffmpeg on PATH.
+Requirements: Python 3.11 (`py -3.11`), ffmpeg on PATH. setup.ps1 also
+installs [deno](https://deno.land) if missing - yt-dlp needs a JS runtime for
+YouTube downloads (without one they 403).
 
 ```powershell
 powershell -File setup.ps1

@@ -7,6 +7,12 @@ py -3.11 -m venv .venv
 & .venv\Scripts\python -m pip install --upgrade pip
 & .venv\Scripts\pip install -r requirements.txt
 
+# yt-dlp needs a JavaScript runtime for YouTube; deno is its default choice.
+if (-not (Get-Command deno -ErrorAction SilentlyContinue)) {
+  Write-Host "Installing deno (yt-dlp JS runtime)..."
+  winget install --id DenoLand.Deno -e --accept-source-agreements --accept-package-agreements
+}
+
 # Model weights (~120 MB); server also auto-downloads if missing.
 $weights = Join-Path $PSScriptRoot "..\uvr\uvr5_weights\2_HP-UVR.pth"
 if (-not (Test-Path $weights)) {

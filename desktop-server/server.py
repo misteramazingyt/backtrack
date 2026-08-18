@@ -421,10 +421,12 @@ def main():
     Handler.token = args.token
     Handler.work_dir = work_dir
 
-    if init_spotify():
-        pass
-    else:
+    if not init_spotify():
         log("Now-playing disabled (set SPOTIPY_CLIENT_ID / SPOTIPY_CLIENT_SECRET to enable).")
+
+    if shutil.which("deno") is None and shutil.which("node") is None:
+        log("WARNING: no JavaScript runtime (deno/node) on PATH - YouTube "
+            "downloads will likely fail with 403. Install deno: winget install DenoLand.Deno")
 
     threading.Thread(target=worker, args=(work_dir,), daemon=True).start()
 
