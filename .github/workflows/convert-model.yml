@@ -18,7 +18,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install converter deps
-        run: pip install "torch==2.7.0" coremltools numpy  # newest torch coremltools supports
+        # torch 2.7 = newest coremltools supports; numpy<2 = coremltools'
+        # int-op converter breaks on numpy 2 scalar conversion
+        run: pip install "torch==2.7.0" coremltools "numpy<2"
 
       - name: Download model weights
         run: |

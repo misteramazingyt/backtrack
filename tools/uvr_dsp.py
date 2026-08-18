@@ -17,7 +17,7 @@ import numpy as np
 
 
 # ---------------------------------------------------------------------------
-# librosa-compatible STFT / iSTFT (hann, center=True, pad_mode='reflect')
+# librosa-0.9-compatible STFT / iSTFT (hann, center=True, pad_mode='constant')
 
 
 def _hann(n):
@@ -26,7 +26,7 @@ def _hann(n):
 
 
 def stft(y, n_fft, hop):
-    y = np.pad(y.astype(np.float32), n_fft // 2, mode="reflect")
+    y = np.pad(y.astype(np.float32), n_fft // 2, mode="constant")
     n_frames = 1 + (len(y) - n_fft) // hop
     idx = np.arange(n_fft)[None, :] + hop * np.arange(n_frames)[:, None]
     frames = y[idx] * _hann(n_fft)[None, :]
