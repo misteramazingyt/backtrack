@@ -75,6 +75,42 @@ final class AppState: ObservableObject {
         }
     }
 
+    /// v2: fully on-device isolation of a local audio file (no server).
+    func isolateLocalFile(_ url: URL) {
+        player.stop()
+        pollTask?.cancel()
+        job = JobStatus(
+            job: "local", url: nil, stage: "separating", error: nil,
+            title: url.deletingPathExtension().lastPathComponent,
+            artist: "On-device", duration: nil, artwork: nil, elapsed: nil)
+        phase = .working("Preparing…")
+        pollTask = Task { [weak self] in
+            do {
+                // copy while we hold security-scoped access, then work on the copy
+                let scoped = url.startAccessingSecurityScopedResource()
+                let tmp = FileManager.default.temporaryDirectory
+                    .appendingPathComponent("import-\(UUID().uuidString).\(url.pathExtension)")
+                try? FileManager.default.removeItem(at: tmp)
+                try FileManager.default.copyItem(at: url, to: tmp)
+                if scoped { url.stopAccessingSecurityScopedResource() }
+
+                let out = try await Task.detached(priority: .userInitiated) {
+                    try OnDeviceSeparator.shared.separate(inputURL: tmp) { label, frac in
+                        Task { @MainActor [weak self] in
+                            self?.phase = .working("\(label) \(Int(frac * 100))%")
+                        }
+                    }
+                }.value
+                try? FileManager.default.removeItem(at: tmp)
+                try self?.player.load(fileURL: out)
+                self?.phase = .ready
+            } catch is CancellationError {
+            } catch {
+                self?.phase = .failed(error.localizedDescription)
+            }
+        }
+    }
+
     func isolate() {
         guard let client else {
             phase = .failed("Set the server address in Settings first.")

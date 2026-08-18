@@ -5,6 +5,8 @@
 *.jpg binary
 *.jpeg binary
 *.pth binary
+*.bin binary
+*.mlmodel binary
 *.aac binary
 *.wav binary
 *.mp3 binary

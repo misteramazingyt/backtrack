@@ -1,7 +1,9 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct HomeView: View {
     @EnvironmentObject var state: AppState
+    @State private var showFileImporter = false
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -13,6 +15,7 @@ struct HomeView: View {
                     linkInput
                     dividerRow
                     nowPlayingSection
+                    localFileRow
                     isolateButton
                     statusRow
                     resultSection
@@ -169,6 +172,32 @@ struct HomeView: View {
             }
             .padding(16)
             .card()
+        }
+    }
+
+    private var localFileRow: some View {
+        Button { showFileImporter = true } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "waveform.badge.plus")
+                    .foregroundStyle(Theme.lime)
+                Text("Or isolate a local audio file — fully on-device")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Theme.secondaryText)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Theme.secondaryText)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .card()
+        }
+        .disabled(state.isWorking)
+        .fileImporter(isPresented: $showFileImporter,
+                      allowedContentTypes: [UTType.audio]) { result in
+            if case .success(let url) = result {
+                state.isolateLocalFile(url)
+            }
         }
     }
 

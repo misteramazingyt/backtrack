@@ -19,6 +19,10 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: Backtrack
+      # Core ML model (compiled to mlmodelc by Xcode's sources phase)
+      - path: Backtrack-Model/UVR2HP.mlpackage
+        buildPhase: sources
+        type: file
     info:
       path: Backtrack/Info.plist
       properties:
