@@ -1,6 +1,7 @@
 # Python 3.11 (see setup.ps1). Pins match uvr/requirements.txt where it matters:
 # the vendored UVR code uses the librosa 0.9 positional API, which needs
 # numpy < 1.24 and numba 0.57 on Python 3.11.
+setuptools<81  # librosa 0.9 imports pkg_resources
 numpy==1.23.5
 scipy==1.9.3
 numba==0.57.1

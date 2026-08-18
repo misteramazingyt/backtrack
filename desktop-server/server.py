@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Backtrack desktop server.
 
 Runs on the desktop (Windows/macOS/Linux) and does the heavy lifting the
@@ -8,14 +8,14 @@ and serves it to the Backtrack iOS app over the tailnet.
 
 Run inside the venv created by setup.ps1 (Python 3.11):
 
-    .venv\\Scripts\\python server.py --port 8787 --token pick-a-secret
+    .venv\\Scripts\\python server.py --port 8790 --token pick-a-secret
 
 Optional Spotify "currently playing" support (needs a free Spotify
 developer app; see README):
 
     $env:SPOTIPY_CLIENT_ID = "..."
     $env:SPOTIPY_CLIENT_SECRET = "..."
-    .venv\\Scripts\\python server.py --port 8787 --token pick-a-secret
+    .venv\\Scripts\\python server.py --port 8790 --token pick-a-secret
 
 Endpoints (token via ?token= or X-Auth-Token header):
     GET  /health          -> {ok, model_loaded, spotify_configured, ...}
@@ -398,7 +398,7 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     global _device
     ap = argparse.ArgumentParser(description="Backtrack desktop server")
-    ap.add_argument("--port", type=int, default=8787)
+    ap.add_argument("--port", type=int, default=8790)
     ap.add_argument("--token", default="", help="shared secret; empty disables auth")
     ap.add_argument("--device", default="auto", choices=["auto", "cpu", "cuda"])
     ap.add_argument("--work-dir", default=str(SERVER_DIR / "work"))

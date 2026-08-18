@@ -1,6 +1,6 @@
 # Backtrack desktop server
 
-Does the work the phone can't: spotdl download → UVR instrumental isolation →
+Does the work the phone can't: spotdl download -> UVR instrumental isolation ->
 ffmpeg m4a encode, served over the tailnet to the Backtrack iOS app.
 
 ## Setup (once)
@@ -17,7 +17,7 @@ code needs) and downloads the `2_HP-UVR.pth` model weights (~120 MB).
 ## Run
 
 ```powershell
-.venv\Scripts\python server.py --port 8787 --token pick-a-secret
+.venv\Scripts\python server.py --port 8790 --token pick-a-secret
 ```
 
 Flags: `--device auto|cpu|cuda` (auto picks CUDA when available),
@@ -31,11 +31,11 @@ Create a free app at https://developer.spotify.com/dashboard, add redirect URI
 ```powershell
 $env:SPOTIPY_CLIENT_ID = "..."
 $env:SPOTIPY_CLIENT_SECRET = "..."
-.venv\Scripts\python server.py --port 8787 --token pick-a-secret
+.venv\Scripts\python server.py --port 8790 --token pick-a-secret
 ```
 
 First launch opens a browser to authorize; the token caches in
-`.spotify-cache`. Without these env vars the server still works — the app
+`.spotify-cache`. Without these env vars the server still works - the app
 just won't show the now-playing card.
 
 ## API
@@ -45,7 +45,7 @@ just won't show the now-playing card.
 | `/health` | GET | liveness + config info (no auth) |
 | `/now-playing` | GET | current Spotify track |
 | `/extract` | POST `{"url": ...}` | start/reuse a job for a track link |
-| `/status/<id>` | GET | job stage: `fetching → downloading → separating → encoding → done` |
+| `/status/<id>` | GET | job stage: `fetching -> downloading -> separating -> encoding -> done` |
 | `/audio/<id>` | GET | the finished instrumental (audio/mp4) |
 
 Auth: send the token as `X-Auth-Token` header or `?token=` query param.
@@ -53,5 +53,5 @@ Auth: send the token as `X-Auth-Token` header or `?token=` query param.
 ## Autostart (optional)
 
 ```powershell
-schtasks /create /tn BacktrackServer /sc onlogon /tr "powershell -WindowStyle Hidden -Command \"cd 'D:\path\to\repo\desktop-server'; $env:SPOTIPY_CLIENT_ID='...'; $env:SPOTIPY_CLIENT_SECRET='...'; .venv\Scripts\python server.py --port 8787 --token pick-a-secret\""
+schtasks /create /tn BacktrackServer /sc onlogon /tr "powershell -WindowStyle Hidden -Command \"cd 'D:\path\to\repo\desktop-server'; $env:SPOTIPY_CLIENT_ID='...'; $env:SPOTIPY_CLIENT_SECRET='...'; .venv\Scripts\python server.py --port 8790 --token pick-a-secret\""
 ```

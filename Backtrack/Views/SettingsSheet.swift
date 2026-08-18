@@ -9,7 +9,7 @@ struct SettingsSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("http://100.x.y.z:8787", text: $state.serverURLString)
+                    TextField("http://100.x.y.z:8790", text: $state.serverURLString)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                         .keyboardType(.URL)
@@ -45,7 +45,7 @@ struct SettingsSheet: View {
     }
 
     private func testConnection() {
-        testResult = "Testing…"
+        testResult = "Testing..."
         guard let client = state.client else {
             testResult = "Enter a valid URL first."
             return
@@ -53,10 +53,10 @@ struct SettingsSheet: View {
         Task {
             do {
                 let h = try await client.health()
-                var parts = ["Connected ✓", "device: \(h.device ?? "?")"]
+                var parts = ["Connected", "device: \(h.device ?? "?")"]
                 parts.append(h.spotify_configured == true
                              ? "Spotify now-playing: on" : "Spotify now-playing: off")
-                testResult = parts.joined(separator: " · ")
+                testResult = parts.joined(separator: " | ")
                 state.startNowPlayingRefresh()
             } catch {
                 testResult = "Failed: \(error.localizedDescription)"

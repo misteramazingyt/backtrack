@@ -1,4 +1,4 @@
-# Creates the Python 3.11 venv the Backtrack server runs in and downloads
+﻿# Creates the Python 3.11 venv the Backtrack server runs in and downloads
 # the UVR model weights. Run once:  powershell -File setup.ps1
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
@@ -16,4 +16,4 @@ if (-not (Test-Path $weights)) {
 
 Write-Host ""
 Write-Host "Done. Start the server with:"
-Write-Host "  .venv\Scripts\python server.py --port 8787 --token pick-a-secret"
+Write-Host "  .venv\Scripts\python server.py --port 8790 --token pick-a-secret"
