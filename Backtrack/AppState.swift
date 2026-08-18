@@ -67,7 +67,7 @@ final class AppState: ObservableObject {
                     if let np = try? await client.nowPlaying(), np.url != nil {
                         self.nowPlaying = np
                     } else {
-                        self?.nowPlaying = nil
+                        self.nowPlaying = nil
                     }
                 }
                 try? await Task.sleep(nanoseconds: 10_000_000_000)
