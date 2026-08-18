@@ -1,0 +1,38 @@
+name: Convert UVR model to Core ML
+
+on:
+  workflow_dispatch:
+
+jobs:
+  convert:
+    name: pth -> mlpackage (fp16, iOS17)
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install converter deps
+        run: pip install torch coremltools numpy
+
+      - name: Download model weights
+        run: |
+          curl -sL -o uvr/uvr5_weights/2_HP-UVR.pth \
+            https://huggingface.co/fastrolling/uvr/resolve/main/Main_Models/2_HP-UVR.pth
+          ls -lh uvr/uvr5_weights/
+
+      - name: Convert and verify parity
+        run: python tools/export_coreml.py
+
+      - name: Upload mlpackage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UVR2HP-mlpackage
+          path: UVR2HP.mlpackage
+          if-no-files-found: error
+          retention-days: 90
