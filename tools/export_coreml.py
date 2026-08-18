@@ -17,6 +17,7 @@ import torch
 # spec_utils imports librosa at module load; the net itself never uses it,
 # and librosa cannot run everywhere we need this to (numba/JIT).
 sys.modules.setdefault("librosa", types.ModuleType("librosa"))
+sys.modules.setdefault("soundfile", types.ModuleType("soundfile"))
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UVR = os.path.join(REPO, "uvr")
