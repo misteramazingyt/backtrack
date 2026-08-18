@@ -1,0 +1,48 @@
+name: Backtrack
+options:
+  bundleIdPrefix: com.backtrack
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: "" # <-- set your Apple Developer Team ID in Xcode
+
+targets:
+  Backtrack:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Backtrack
+    info:
+      path: Backtrack/Info.plist
+      properties:
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIRequiresFullScreen: true
+        # The desktop server speaks plain HTTP over the tailnet
+        # (WireGuard-encrypted underneath); ATS must allow it.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.backtrack.app
+        TARGETED_DEVICE_FAMILY: "1"
+        ENABLE_PREVIEWS: YES
+
+schemes:
+  Backtrack:
+    build:
+      targets:
+        Backtrack: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    archive:
+      config: Release
